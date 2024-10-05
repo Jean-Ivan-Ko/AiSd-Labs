@@ -45,10 +45,9 @@ def dp(dist):
     return opt, list(reversed(path))
 
 def get_input():
-    n = int(input())
-    dist = []
-    for _ in range(n):
-        dist.append(list(map(int, input().split())))
+    with open("input.txt") as file:
+        n = int(file.readline())
+        dist = [list(map(int, line.split())) for line in file.readlines()]
 
     return dist
 
@@ -56,3 +55,6 @@ dist = get_input()
 min_length, min_path = dp(dist)
 print(min_length)
 print(' '.join(map(lambda x: str(x + 1), min_path[0:])))
+
+with open("output.txt", "w") as outfile:
+    outfile.write(str(min_length))
