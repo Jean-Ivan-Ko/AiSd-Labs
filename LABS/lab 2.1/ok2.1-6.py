@@ -1,7 +1,7 @@
-from functools import cmp_to_key
+from functools import cmp_to_key# позволяет преобразовать функцию сравнения в ключ для сортировки элементов
 
 
-def comp(a, b):
+def comp(a, b):#сравнивает два числа и возвращает -1, если первое число больше второго, 1 — если первое меньше второго, и 0 — если они равны
     if a + b > b + a:
         return -1
     elif a + b < b + a:
@@ -11,11 +11,11 @@ def comp(a, b):
 
 
 def solve(a):
-    a = list(map(str, a))
+    a = list(map(str, a))#Преобразует входной список чисел в список строк
 
-    srt = sorted(a, key=cmp_to_key(comp))
+    srt = sorted(a, key=cmp_to_key(comp))#Сортирует строки в алфавитном порядке 
 
-    result = ''.join(srt)
+    result = ''.join(srt)#Объединяет отсортированные строки в одну строку
 
     if result[0] == '0':
         return '0'
@@ -24,9 +24,9 @@ def solve(a):
 
 
 
-with open("input.txt", "r") as infile:
-    n = int(infile.readline().strip())
-    a = list(map(int, infile.readline().split()))
+with open("input.txt", "r") as infile:#Читает данные
+    n = int(infile.readline().strip())#целое число n
+    a = list(map(int, infile.readline().split()))# n целых чисел, которые записываются в список a
 
 result = solve(a)
 
