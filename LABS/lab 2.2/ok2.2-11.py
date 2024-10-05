@@ -1,22 +1,22 @@
 class Node:
-    def __init__(self, key):
-        self.key = key
-        self.height = 1
-        self.left = None
+    def __init__(self, key):#узел бинарного дерева
+        self.key = key#значение узла
+        self.height = 1#высота поддерева с корнем в этом узле
+        self.left = None# ссылки на левого и правого потомков соответственно
         self.right = None
 
-class AVLTree:
-    def get_height(self, node):
+class AVLTree:# реализует структуру данных «дерево AVL»
+    def get_height(self, node):#возвращает высоту поддерева с корнем в заданном узле. Если узел не задан, то возвращается 0.
         return node.height if node else 0
 
-    def update_height(self, node):
+    def update_height(self, node):#обновляет высоту поддерева, проходя по всем узлам от заданного до листьев
         if node:
             node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
 
-    def get_balance(self, node):
+    def get_balance(self, node):#вычисляет разность высот левого и правого поддеревьев заданного узла. Если узел не задан, то возвращается 0
         return self.get_height(node.left) - self.get_height(node.right) if node else 0
 
-    def rotate_right(self, y):
+    def rotate_right(self, y):#выполняют повороты узлов бинарного дерева для поддержания свойства сбалансированности
         x = y.left
         T2 = x.right
         x.right = y
@@ -34,7 +34,7 @@ class AVLTree:
         self.update_height(y)
         return y
 
-    def balance(self, node):
+    def balance(self, node):#принимает узел дерева и возвращает его после балансировки
         balance_factor = self.get_balance(node)
         if balance_factor > 1:
             if self.get_balance(node.left) < 0:
@@ -46,7 +46,7 @@ class AVLTree:
             return self.rotate_left(node)
         return node
 
-    def insert(self, node, key):
+    def insert(self, node, key):#добавляет новый ключ в дерево. Если ключа нет в дереве, то создаётся новый узел с этим ключом
         if not node:
             return Node(key)
         if key < node.key:
@@ -58,7 +58,7 @@ class AVLTree:
         self.update_height(node)
         return self.balance(node)
 
-    def delete(self, node, key):
+    def delete(self, node, key):# принимает узел дерева и ключ, который нужно удалить. Если ключа нет в дереве, то узел возвращается без изменений
         if not node:
             return node
         if key < node.key:
@@ -76,12 +76,12 @@ class AVLTree:
         self.update_height(node)
         return self.balance(node)
 
-    def get_min_value_node(self, node):
+    def get_min_value_node(self, node):#который находит минимальный элемент в правом поддереве
         if node is None or node.left is None:
             return node
         return self.get_min_value_node(node.left)
 
-    def exists(self, node, key):
+    def exists(self, node, key):#проверяет, есть ли в дереве узел с заданным ключом
         if not node:
             return False
         if key == node.key:
@@ -91,7 +91,7 @@ class AVLTree:
         else:
             return self.exists(node.right, key)
 
-    def next(self, node, key):
+    def next(self, node, key):#находит следующий элемент в порядке обхода дерева после элемента с заданным ключом
         successor = None
         while node:
             if node.key > key:
