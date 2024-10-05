@@ -6,18 +6,18 @@ def dp(dist):
 
     dist = [[dist[i][j] for j in range(n)] for i in range(n)]
 
-    C = {}
+    C = {}#словарь C пустыми значениями
 
-    for k in range(1, n):
+    for k in range(1, n):#Заполняет начальные значения словаря
         C[(1 << k, k)] = (dist[0][k], 0)
 
     for sb_size in range(2, n):
-        for subset in combinations(range(1, n), sb_size):
-            bits = 0
+        for subset in combinations(range(1, n), sb_size):#Для каждого размера подмножества выполняет перебор всех возможных подмножеств 
+            bits = 0#Преобразует подмножество в битовую маску, используя побитовые операции
             for bit in subset:
                 bits |= 1 << bit
 
-            for k in subset:
+            for k in subset:#Проходит по каждому элементу подмножества и вычисляет сумму расстояний между текущим элементом и всеми остальными элементами подмножества
                 prev = bits & ~(1 << k)
 
                 res = []
@@ -25,7 +25,7 @@ def dp(dist):
                     if m == 0 or m == k:
                         continue
                     res.append((C[(prev, m)][0] + dist[m][k], m))
-                C[(bits, k)] = min(res)
+                C[(bits, k)] = min(res)#Сохраняет полученные суммы в словаре C как ключ (bits, k), где bits — битовая маска подмножества, а k — текущий элемент
 
     bits = (2 ** n - 1) - 1
     res = []
@@ -44,15 +44,15 @@ def dp(dist):
 
     return opt, list(reversed(path))
 
-def get_input():
-    with open("input.txt") as file:
+def get_input():#запрашивает у пользователя количество элементов в множестве и считывает расстояния между ними
+    with open("input.txt") as file:#я переделал на взятие из файла
         n = int(file.readline())
         dist = [list(map(int, line.split())) for line in file.readlines()]
 
     return dist
 
 dist = get_input()
-min_length, min_path = dp(dist)
+min_length, min_path = dp(dist)#возвращает два значения: минимальную сумму расстояний и путь, который привёл к этой сумме.
 print(min_length)
 print(' '.join(map(lambda x: str(x + 1), min_path[0:])))
 
